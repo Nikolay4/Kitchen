@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Добавить фотографию";
+}
+@model Kitchen.Models.AddPhotoModel
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.Jcrop.min.js"></script>
+<link href="~/Content/themes/jquery.Jcrop.min.css" rel="stylesheet" />
+
+
+@*<h2>Фотка:</h2>
+<img id="Img" src='@(ViewBag.Photo == null ? "/Content/themes/noimage.jpg" : "data:image/jpg;base64,"+@System.Convert.ToBase64String((byte[])ViewBag.Photo))'">*@
+
+<h2>Добавить фотографию</h2>
+
+@using (Html.BeginForm("AddPhoto", "Album", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return mySubmit();" }))
+{
+    @Html.HiddenFor(m => m.AlbumId)
+    @*Html.HiddenFor(m => m.ThingId, new { @Value = Model == null ? 0 : Model.ThingId })*@
+    @Html.HiddenFor(m => m.x);
+    @Html.HiddenFor(m => m.y);
+    @Html.HiddenFor(m => m.w);
+    @Html.HiddenFor(m => m.h);
+        
+    <img id="blah" src="~/Content/nophoto.png" alt="your image" /><br/>
+        <input type="file" name="Photo" id="Photo" accept="image/*" />
+        <br />
+        <input type="submit" value="Добавить фотографию" />
+
+}
+
+
+@*<form id="form1" runat="server">
+    <img id="blah" src="~/Content/nophoto.png" alt="your image" /><br/>
+    <input type='file' id="imgInp" />
+</form>*@
+
+<script type="text/javascript">
+    function mySubmit() {
+        if (CropCoords.x == undefined) return false;
+
+        if (CropCoords.x == CropCoords.x2 || CropCoords.y == CropCoords.y2) {
+            jcrop_api.animateTo(getRandom());
+            return false;
+        }
+
+        $("#x").val(parseInt(CropCoords.x));
+        $("#y").val(parseInt(CropCoords.y));
+        $("#w").val(parseInt(CropCoords.w));
+        $("#h").val(parseInt(CropCoords.h));
+        return true;
+    }
+
+    var CropCoords = {};
+
+    function getRandom() {
+        //jcrop_api.animateTo(getRandom());
+        var dim = jcrop_api.getBounds();
+        return [
+          Math.round(Math.random() * dim[0]),
+          Math.round(Math.random() * dim[1]),
+          Math.round(Math.random() * dim[0]),
+          Math.round(Math.random() * dim[1])
+        ];
+    };
+
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+                
+                var width = $('#blah').width();
+                var height = $('#blah').height();
+                var cropWidth = (width < height) ? width : 0;
+                var cropHeight = (height < width) ? height : 0;
+
+
+                $('#blah').Jcrop({
+                    bgColor: 'black',
+                    bgOpacity: .4,
+                    setSelect: [0, 0, cropWidth, cropHeight],
+                    aspectRatio: 4 / 3,
+                    onSelect: function (c) { CropCoords = c; },
+                    onChange: function (c) { CropCoords = c; }//showCoords
+                }, function () {
+                    jcrop_api = this;
+                });
+
+            }
+
+            reader.readAsDataURL(input.files[0]);
+
+        }
+
+
+    }
+
+    $("#Photo").change(function () {
+        $('#blah').attr('src', "~/Content/nophoto.png");
+        readURL(this);
+    });
+
+
+</script>

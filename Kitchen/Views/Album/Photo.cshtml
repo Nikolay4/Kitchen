@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Фото";
+}
+@model Kitchen.Models.PhotoModel
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/labs.js"></script>
+<link href="~/Content/css/labs.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/Rating/jquery.raty.js"></script>
+<link href="~/Content/css/jquery.raty.css" rel="stylesheet" type="text/css"/>
+
+
+<style>.functions .demo {
+  margin-bottom: 10px;
+}
+
+.functions .item {
+  background-color: #FEFEFE;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+}
+
+.functions .item a {
+  border: 1px solid #CCC;
+  margin-left: 10px;
+  padding: 5px;
+  text-decoration: none;
+}
+
+.functions .item input {
+  display: inline-block;
+  margin-left: 2px;
+  padding: 5px 6px;
+  width: 120px;
+}
+
+.functions .item label {
+  display: inline-block;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.hint {
+  text-align: center;
+  width: 160px
+}
+
+div.hint {
+  font-size: 1.4em;
+  height: 46px;
+  margin-top: 15px;
+  padding: 7px
+}
+</style>
+<table style="width:100%; text-align:left">
+    <tr>
+        <td ><h2><a href="" onclick="window.history.go(-1); return false;">&lt;= назад</a></h2></td>
+        <td></td>
+        <td style="text-align:right">
+            @if(User!=null && Kitchen.Models.db.IsInRole(User.Identity.Name,"admin"))
+            {
+                <a href="@Url.Action(MVC.Album.DeletePhoto(Model.PhotoId))" onclick='return confirm("Удалить фото?");'>Удалить фотографию</a>
+            }
+        </td>
+    </tr>
+</table>
+
+<br/>
+<div id="tit_line" style="margin-top:27px;">
+<h3>Фотогалерея</h3>
+<div style="float:left; margin-top:10px;"><h2><b>Фотография @ViewBag.number из @ViewBag.count</b></h2></div>
+</div>
+      
+      
+<img class="slide_gal_img" src='@("data:image/jpg;base64,"+System.Convert.ToBase64String(Model.Img))' />
+      
+<div id="img_data">Дабавлена @Model.Date | @*<font color="#2b587a">Мне нравится</font>*@ </div>
+
+<div id="Star" style="cursor: pointer"></div>
+<div id="Res"></div>
+
+@Html.HiddenFor(m => m.Rating)
+@Html.HiddenFor(m => m.RatingCount)
+@Html.HiddenFor(m => m.IsCanVote)
+@Html.HiddenFor(m => m.PhotoId)
+
+<script>
+    $('#Star').raty({
+        half: true,
+        path: null,
+        starHalf: '../../../Content/Rating/images/star-half.png',
+        starOff: '../../../Content/Rating/images/star-off.png',
+        starOn: '../../../Content/Rating/images/star-on.png'
+    });
+
+    $("#Rating").val().replace(",", ".");
+
+    var rat = parseFloat($("#Rating").val());
+    var res;
+    var ratCount = Number($("#RatingCount").val());
+
+
+    if ($("#IsCanVote").val() == "False") {
+        noVote();
+        Raty();
+    }
+    else {
+        $('#Star').bind("click", function () {
+            var val = $("#Star input").val().replace(",",".");
+            val = +val;
+            vote(val);
+            rat = parseFloat($("#Rating").val());
+            rat = rat + val;
+            $("#Rating").val(rat);
+            ratCount = Number($("#RatingCount").val()) + 1;
+            $("#RatingCount").val(ratCount);
+            res = rat / ratCount;
+            if ("#IsCanVote" == "False") {
+                noVote();
+            }
+            Raty();
+        });
+    }
+
+    function noVote() {
+        if (ratCount == 0) {
+            res = 0;
+        }
+        else res = rat / ratCount;
+        $("#Star input").val(res);
+
+
+    }
+
+    function Raty() {
+        $("#Star>input").val();
+        $("#Star>img").attr("title", "");
+        $("#Res").html(res);
+        $('#Star').raty({
+            score: res,
+            readOnly: true,
+            noRatedMsg: "Неа)",
+            half: true,
+            path: null,
+            starHalf: '../../../Content/Rating/images/star-half.png',
+            starOff: '../../../Content/Rating/images/star-off.png',
+            starOn: '../../../Content/Rating/images/star-on.png',
+            title: res,
+            value: +($("#Rating").val()) / +($("#RatingCount").val()),
+        }
+        );
+    }
+
+    function vote(val) {
+        var photoId = $("#PhotoId").val();
+        $.ajax({
+            url: '/Album/PhotoVoting?PhotoId=' + photoId + '&val=' + val,
+            success: function (data) {
+                $('IsCanVote').val(data);
+            }
+        });
+    }
+</script>

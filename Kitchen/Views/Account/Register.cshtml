@@ -1,0 +1,51 @@
+﻿@model Kitchen.Models.RegisterModel
+@{
+    ViewBag.Title = "Регистрация";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Создание новой учетной записи.</h2>
+</hgroup>
+
+@using (Html.BeginForm()) 
+{
+    <text>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+        <div id="registr">
+      <div id="tit_line">
+        <h1>Регистрация</h1>
+        <h2>Создание новой учетной записи</h2>
+      </div>
+      <div style="margin-top:25px;">
+@*        <tr><td style="width:50px">Имя</td><td style="width:100px">@Html.TextBoxFor(m => m.UserName)</td></tr>
+                    
+        <tr><td style="width:50px">E-mail адрес</td><td style="width:100px">@Html.TextBoxFor(m => m.EmailAddress)</td></tr>
+
+        <tr><td style="width:50px">Пароль</td><td style="width:100px">@Html.PasswordFor(m => m.Password)</td></tr>
+                            
+        <tr><td style="width:50px">Подвердение пароля</td><td style="width:100px">@Html.PasswordFor(m => m.ConfirmPassword)</td></tr>
+
+        <tr><td style="width:50px">Телефон</td><td style="width:100px">@Html.TextBoxFor(m => m.PhoneNumber)</td></tr>
+
+        <tr><td style="width:50px">Домашний адрес</td><td style="width:100px">@Html.TextBoxFor(m => m.Address)</td></tr>
+
+        <button class="blue_btn" style="margin-left:282px; width:100px;"><input type="submit" />Регистрация</button>*@
+        
+        Имя: <input data-val="true" data-val-required="Требуется поле Имя." id="UserName" name="UserName" style="width:200px; margin-left:141px;" class="kuh_field" type="text" value=""><br /><br />
+        E-mail: <input type="text" style="width:200px; margin-left:128px;" class="kuh_field" value="" id="EmailAddress" name="EmailAddress"/> <br /><br />
+        Пароль: <input style="width:200px; margin-left:119px;" class="kuh_field" data-val="true" data-val-length="Значение &quot;Password&quot; должно содержать не менее 6 символов." data-val-length-max="100" data-val-length-min="6" data-val-required="Требуется поле Password." id="Password" name="Password" type="password"><br /><br />
+        Подтверждение пароля: <input style="width:200px; margin-left:12px;" class="kuh_field" data-val="true" data-val-equalto="Пароль и его подтверждение не совпадают." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" type="password"><br /><br />
+        Телефон: <input type="text" style="width:200px; margin-left:109px;" class="kuh_field"  id="PhoneNumber" name="PhoneNumber" value="" /> <br /><br />
+        Домашний адрес: <input data-val="true" data-val-required="Требуется поле Address." id="Address" name="Address" type="text" style="width:200px; margin-left:56px;" class="kuh_field" value="" /> <br /><br />
+        <button class="blue_btn" style="margin-left:282px; width:100px;">Регистрация</button>
+      </div>
+    </div>
+
+    </text>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,83 @@
+﻿@model Kitchen.Models.Manager
+
+<table style="vertical-align:top; display:block" class="tab raschet">
+    <tr style="border:2px solid blue">
+        <td style="width:100px; text-align:center">Имя</td>
+        <td style="width:60px; text-align:center">Категория</td>
+        <td style="width:40px; text-align:center">Форма</td>
+        <td style="width:40px; text-align:center">Пожелания</td>
+        <td style="width:40px; text-align:center">Дата</td>
+        <td style="width:40px; text-align:center">Менеджер</td>
+        <td style="width:40px; text-align:center">Статус</td>
+        <td style="width:300px; text-align:center">Коментарий</td>
+    </tr>
+        if(Model.Zamer.UserId == -1)
+            {
+                <tr class="Manager_@Model.ManagerId raschet Status_@Model.Status" style="border:2px solid blue">
+                    <td Id="Id"        class="Id"       style="display:none">@Model.Id</td>
+                    <td Id="UserName"  class="UserName" style="width:100px; text-align:center">@Model.Raschet.UserName</td>
+                    <td Id="Type"      class="Type"     style="width:60px; text-align:center">@Kitchen.Models.Enums.categoryName((int)Model.Raschet.Type)</td>
+                    <td Id="Form"      class="Form"     style="width:40px; text-align:center">@Model.Raschet.Form</td>
+                    <td Id="Text"      class="Text"     style="width:40px; text-align:center">@Model.Raschet.Text</td>
+                    <td Id="Date"      class="Date"     style="width:40px; text-align:center">@Model.Date</td>
+                    <td Id="Manager    class="Manager @Model.ManagerId" style="width:40px; text-align:center"><select data-val="true" data-val-required="Требуется поле Type." id="Type" name="Type">
+                                                                                        <option>@Model.ManagerName</option>
+                                                                                        <option>Взять в работу</option>
+                                                                                     </select></td>
+                    <td style="width:40px; text-align:center"><select data-val="true" data-val-required="Требуется поле Type." id="Type" name="Type">
+                                                                                        <option>@Kitchen.Models.Enums.Status(Model.Status)</option>
+                                                                                        <option value="1">Новый</option>
+                                                                                        <option value="2">В работе</option>
+                                                                                        <option value="3">Выполнен</option>
+                                                                                        <option value="4">Отменен</option>
+                                                                                        <option value="5">Архив</option>
+                                                                                     </select>
+                        </td>
+                    <td class="Comments" style="width:300px; text-align:center"><textarea value="@Model.Comments"></textarea></td>
+                    <td><a href="@Url.Action(MVC.Manager.Change(Model))">Изменить</a></td>
+                </tr>
+                
+            }
+</table>
+
+<br />
+<br />
+<br />
+
+<table style="vertical-align:top" class="tab zamer">
+    <tr style="border:2px solid blue">
+        <td style="width:100px;  text-align:center">Имя</td>
+        <td style="width:120px; text-align:center">Телефон</td>
+        <td style="width:100px; text-align:center">Адрес</td>
+        <td style="width:100px; text-align:center">Время</td>
+        <td style="width:40px;  text-align:center">Дата</td>
+        <td style="width:100px; text-align:center">Менеджер</td>
+        <td style="width:100px; text-align:center">Статус</td>
+        <td style="width:300px; text-align:center">Коментарий</td>
+    </tr>
+
+        if(Model.Raschet.UserId == -1)
+            {
+                <tr class="@Model.ManagerId zamer @Model.Status" style="border:2px solid blue">
+                    <td class="Id" style="display:none">@Model.Id</td>
+                    <td class="UserName" style="width:100px; text-align:center">@Model.Zamer.UserName</td>
+                    <td class="Phone" style="width:120px; text-align:center">@Model.Zamer.Phone</td>
+                    <td class="Address" style="width:100px; text-align:center">@Model.Zamer.Address</td>
+                    <td class="Time" style="width:100px; text-align:center">@Model.Zamer.Time</td>
+                    <td class="Date" style="width:40px; text-align:center">@Model.Date</td>
+                    <td class="Manager_@Model.ManagerId" style="width:100px; text-align:center"><select data-val="true" data-val-required="Требуется поле Type." id="Type" name="Type">
+                                                                                        <option>@Model.ManagerName</option>
+                                                                                        <option>Взять в работу</option>
+                                                                                     </select></td>
+                    <td class="Status" style="width:100px; text-align:center"><select data-val="true" data-val-required="Требуется поле Type." id="Type" name="Type">
+                                                                                        <option>@Model.Status</option>
+                                                                                        <option>Новый</option>
+                                                                                        <option>В работе</option>
+                                                                                        <option>Выполнен</option>
+                                                                                        <option>Отменен</option>
+                                                                                        <option>Архив</option>
+                                                                                     </select></td>
+                    <td class="Comments" style="width:300px; text-align:center"><input type="text" value="@Model.Comments" /></td>
+                </tr>
+            }
+</table>

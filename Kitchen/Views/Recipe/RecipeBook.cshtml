@@ -1,0 +1,25 @@
+﻿@model List<Kitchen.Models.RecipeModel>
+
+<div style="margin-top:33px;">
+
+@if (User != null && User.Identity.IsAuthenticated  && (Kitchen.Models.db.IsInRole(User.Identity.Name,"admin")))
+    {
+        <a href="@Url.Action(MVC.Recipe.EditRecipe())">Добавить рецепт</a><br/><br/>
+    }
+
+@foreach(var el in Model)
+{
+<text>
+      <div id="rec_blue">
+        <div id="rec_img"><a href="@Url.Action(MVC.Recipe.GetRecipe(el.Id))"><img src="@(el.Photo == null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(el.Photo))" class="rec_image" /></a></div>
+        <div id="rec_inf">
+          <div id="tit_line">
+            <h3>@el.Name</h3>
+          </div>
+          <div id="short_infa">@Html.Raw(el.Brief)</div>
+          <div id="rec_full_link"><a href="@Url.Action(MVC.Recipe.GetRecipe(el.Id))">» Подробнее</a></div>
+        </div>
+      </div>
+      <div id="rec_decor"></div>
+</text>
+}

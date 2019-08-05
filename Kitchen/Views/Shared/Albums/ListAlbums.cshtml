@@ -1,0 +1,17 @@
+﻿@model List<Kitchen.Models.AlbumsModel>
+@if(Model != null)
+{
+ <text>
+<div id="tit_line" style="margin-top:27px;">
+        <h3>Фотогалерея</h3>
+       <h2>В коллекции <b>@Model.Count</b> альбомов</h2>
+</div>
+</text>
+
+foreach (var el in Model)
+{
+<text>
+      <a href="@Url.Action(MVC.Album.ShowAlbum((el.AlbumId).ToString()))"><div id="foto_cover"><div id="foto_desc">@el.Name</div><img class="foto_img" src="@(el.ImgAlbum==null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(el.ImgAlbum))" /></div></a>
+</text>
+}
+}

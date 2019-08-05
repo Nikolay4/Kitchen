@@ -1,0 +1,9 @@
+﻿@{
+    Layout = null;
+}
+@model List<Kitchen.Controllers.ImageController.images>
+
+@foreach (var el in Model)
+{
+    <img src="data:image/jpg;base64,@System.Convert.ToBase64String(el.Image)" title="img@(el.Id)" style="max-width:300px" /> <a href="/Image/DeleteImg/@(el.Id)"> <img src="~/Images/not.png" /> </a><br/>
+}

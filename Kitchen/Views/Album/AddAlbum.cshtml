@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Добавить или редактировать альбом";
+}
+@model Kitchen.Models.AlbumsModel
+
+    @if (Model == null || Model.AlbumId == 0)
+    {
+        <h2>Добавить альбом</h2>
+    }
+    else
+    {
+        <h2>Редактировать альбом</h2>
+    }
+
+
+@using (Html.BeginForm("AddAlbum", "Album", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.AlbumId, new { @Value = Model == null ? 0 : Model.AlbumId })
+
+    
+    <br /><text>Название:</text> @Html.EditorFor(m => m.Name) <br />
+    <br /><text>Alias (только английские без пробелов):</text> @Html.EditorFor(m => m.Alias) <br />
+    <br /><text>Описание:</text> <br /> @Html.TextAreaFor(m => m.Description, 5, 1, new { @style = "width:97%;" }) <br />
+    <br /><text>Насколько выше отобразить в списке альбомов:</text> @Html.EditorFor(m => m.Position) <br />
+    <input type="submit" value="Go!"/>
+}

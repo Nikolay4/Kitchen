@@ -1,0 +1,11 @@
+﻿@{Layout = null;}
+@model Kitchen.Models.ShowKitchensList
+    <div id="tit_line" style="margin-top:27px;">
+        <h3>@Kitchen.Models.Enums.categoryName(Model.category)</h3>
+    </div>
+    @for(var i=0; i<Model.listThing.Count; i++)
+    {
+        <div id="kuhni_kat"><a href="@Url.Action(MVC.Home.KitchensList(0,0,0,0,Model.listThing[i].Article))"><img class="kuhni_img" src="@(Model.listThing[i].Img==null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(Model.listThing[i].Img))" /></a><br><br>@Model.listThing[i].Name</div>
+    }
+    
+

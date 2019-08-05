@@ -1,0 +1,83 @@
+﻿@model Kitchen.Models.ListNews
+
+    @{decimal pageCount = Math.Ceiling((decimal)Model.count / 10);}
+
+
+<ul class="otziv_pages">
+    @if(Model.page > 1){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-1))"><</a></li>}
+    @if(Model.page-3>0){
+        <li><a href="@Url.Action(MVC.News.ListNews(1))">1</a></li>}
+    @if(Model.page > 4){
+        <li><a href="">...</a></li>}
+    @if(Model.page-2>0){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-2))">@(Model.page-2)</a></li>}
+    @if(Model.page-1>0){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-1))">@(Model.page-1)</a></li>}
+    <li><a style="background-color:grey" href="@Url.Action(MVC.News.ListNews(Model.page))">@(Model.page)</a></li>
+    @if(Model.page+1<=pageCount){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+1))">@(Model.page+1)</a></li>}
+    @if(Model.page+2<=pageCount){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+2))">@(Model.page+2)</a></li>}
+    @if(Model.page+3 < pageCount){
+        <li><a href="">...</a></li>}
+    @if(Model.page+3<pageCount ){
+        <li><a href="@Url.Action(MVC.News.ListNews((int)pageCount))">@(pageCount)</a></li>}
+    @if(Model.page < pageCount){
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+1))">></a></li>}
+</ul>
+
+<br />
+<div style="margin-top:33px;">
+@if(Model.news != null)
+{ 
+    foreach (var el in Model.news)
+    {
+        <text>
+            <div id="rec_blue">
+                <div id="rec_inf">
+                    <div id="tit_line">
+                        <h3>@el.Title | @el.Date.ToString()</h3>
+                    </div>
+                    <div id="short_infa">@Html.Raw(el.Brief)</div>
+                    <div id="rec_full_link"><a href="@Url.Action(MVC.News.Index(el.Alias))">» Подробнее</a></div>
+                </div>
+            </div>
+            <div id="rec_decor"></div>
+        </text>
+    }
+}
+</div>
+<ul class="otziv_pages">
+    @if (Model.page > 1)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-1))"><</a></li>}
+    @if (Model.page - 3 > 0)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(1))">1</a></li>}
+    @if (Model.page > 4)
+    {
+        <li><a href="">...</a></li>}
+    @if (Model.page - 2 > 0)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-2))">@(Model.page - 2)</a></li>}
+    @if (Model.page - 1 > 0)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page-1))">@(Model.page - 1)</a></li>}
+    <li><a style="background-color:grey" href="@Url.Action(MVC.News.ListNews(Model.page))">@(Model.page)</a></li>
+    @if (Model.page + 1 <= pageCount)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+1))">@(Model.page + 1)</a></li>}
+    @if (Model.page + 2 <= pageCount)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+2))">@(Model.page + 2)</a></li>}
+    @if (Model.page + 3 < pageCount)
+    {
+        <li><a href="">...</a></li>}
+    @if (Model.page + 3 < pageCount)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews((int)pageCount))">@(pageCount)</a></li>}
+    @if (Model.page < pageCount)
+    {
+        <li><a href="@Url.Action(MVC.News.ListNews(Model.page+1))">></a></li>}
+</ul>

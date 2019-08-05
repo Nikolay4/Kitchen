@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@if (User != null && User.Identity.IsAuthenticated   && (Kitchen.Models.db.IsInRole(User.Identity.Name,"admin")))
+    {
+    <a href="@Url.Action(MVC.Album.AddAlbum())">Создать альбом</a><br/><br/>
+}
+
+@{Html.RenderPartial(MVC.Shared.Views.Albums.ListAlbums, Kitchen.Models.db.ListAlbums());}

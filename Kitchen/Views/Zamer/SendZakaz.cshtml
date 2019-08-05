@@ -1,0 +1,16 @@
+﻿
+<div style="position:inherit">
+    @if (( (bool)ViewData["result"]) == true)
+    {<text>
+        Ваш заказ успешно принят!<br><br>
+    </text>
+    }
+    else
+    {
+    <text>
+         Что-то пошло не так,пожалуйста повторите заказ<br><br>
+         <a href="@Url.Action(MVC.Zamer.Index())">Вернуться на втраницу заказа</a><br><br>
+    </text>
+    }
+    <a href="@Url.Action(MVC.Home.Index())">Главная</a>
+    </div>

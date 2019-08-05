@@ -1,0 +1,21 @@
+﻿@model Kitchen.Models.RecipeModel
+@if (User != null && User.Identity.IsAuthenticated  && (Kitchen.Models.db.IsInRole(User.Identity.Name,"admin")))
+{
+    <a href="@Url.Action("EditRecipe","Recipe",new {id = Model.Id})">Редактироваить</a><br/><br/>
+}
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<div id="rec_fl_top">
+        <div id="rec_fl_img"><img class="rec_fl_image" src="@(Model.Photo == null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(Model.Photo))" /></div>
+        <div id="rec_fl_ingr">
+        <div id="tit_line2">
+          <h3>@Html.Raw(Model.Name)</h3>
+        </div>
+        <div id="ingr_list" style="margin-left:20px">
+            @Html.Raw(Model.Ingridients)
+        </div>
+      </div>
+    </div>
+    <div id="rec_fl_info">
+          <u>Приготовление</u><br /><br />
+        @Html.Raw(Model.Description)
+    </div>

@@ -1,0 +1,14 @@
+﻿@model Kitchen.Models.ZamerModels 
+<form action="/Zamer/SendZakaz" method="post" novalidate="novalidate">
+      <div id="tit_line">
+        <h1>Вызов замерщика</h1>
+      </div>
+      <div style="margin-top:25px;">
+        <input type="text" style="display:none" name="UserId" value="@(int.Parse(User.Identity.Name))">
+        Ваше имя: <input type="text" style="width:200px; margin-left:47px;" class="kuh_field" value="@Model.UserName" name="UserName"/> <br /><br />
+        Телефон: <input type="text" style="width:200px; margin-left:51px;" class="kuh_field" value="@Model.Phone" name="Phone"/> <br /><br />
+        Адрес: <input type="text" style="width:200px; margin-left:70px;" class="kuh_field" value="@Model.Address" name="Address"/> <br /><br />
+        Удобное время: <input type="text" style="width:200px; margin-left:10px;" class="kuh_field" value="" name="Time"/> <br /><br />
+        <button class="blue_btn" style="margin-left:274px; width:50px;">Ок</button>
+      </div>
+</form>

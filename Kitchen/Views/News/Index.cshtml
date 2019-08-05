@@ -1,0 +1,11 @@
+﻿@model Kitchen.Models.ContentModel 
+
+
+    @*<div id="rec_fl_img"><img class="rec_fl_image" src="@(Model.Photo == null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(Model.Photo))" /></div>*@
+<div id="tit_line">
+    <h3>@Html.Raw(Model.Title)</h3>
+</div>
+<br/>
+<div id="rec_fl_info">
+    @Html.Raw(Model.Description)
+</div>

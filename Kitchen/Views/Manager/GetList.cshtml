@@ -1,0 +1,164 @@
+﻿@model List<Kitchen.Models.Manager>
+<style>
+    table {
+  word-break: break-all;
+}
+
+</style>
+
+
+<h2>Расчет</h2>
+    <div style="border:1px solid black; width:initial;text-align:center"><a href="#" onclick="ShowNew('raschet')">новые/все</a>
+    <a href="#" onclick="My('@User.Identity.Name','raschet')">мои/все</a>
+    <a href="#" onclick="HideTable('raschet')">показать/скрыть</a></div>
+<br />
+<table style="vertical-align:top; display:block;text-align:center;" class="tab raschet" border="1">
+    <tr class="title raschet">
+        <td style="width:60px">Имя</td>
+        <td style="width:60px">Категория</td>
+        <td style="width:30px">Форма</td>
+        <td style="width:60px">Пожелания</td>
+        <td style="width:60px">Дата</td>
+        <td style="width:60px">Менеджер</td>
+        <td style="width:60px">Статус</td>
+        <td style="width:60px;">Коментарий</td>
+    </tr>
+
+        @foreach (var el in Model)
+        {
+        if(el.Zamer.UserId == -1)
+            {
+                <tr class="Manager_@el.ManagerId raschet @el.Status" style="width:inherit">
+                    <form action="/Manager/Change" method="post">
+                        <td>@el.Raschet.UserName</td>
+                        <td>@Kitchen.Models.Enums.categoryName((int)el.Raschet.Type)</td>
+                        <td>@el.Raschet.Form</td>
+                        <td>@el.Raschet.Text</td>
+                        <td>@el.Date</td>
+                        <td>@el.ManagerName</td>
+                        @if(el.ManagerId == int.Parse(User.Identity.Name))
+                        {
+                        <td style="width:40px; text-align:center"><select data-val="true" name="Status">
+                                                                                            <option>@Kitchen.Models.Enums.Status(el.Status)</option>
+                                                                                            <option value="1">Новый</option>
+                                                                                            <option value="2">В работе</option>
+                                                                                            <option value="3">Выполнен</option>
+                                                                                            <option value="4">Отменен</option>
+                                                                                            <option value="5">Архив</option>
+                                                                                         </select></td>
+                        <input type="hidden" name="Id" value="@el.Id" />
+                        <input type="hidden" name="ManagerId" value="@el.ManagerId" />
+                        <input type="hidden" name="Table" value="2" />
+                        <td ><input type="text" name="Comments" value="@el.Comments" /></td>
+                        <td><button class="submit">изменить</button></td>
+                        }
+                        else if(el.Status == 1)
+                        {
+                            <td><a href="@Url.Action(MVC.Manager.TakeInWork(el.Id,2))">взять</a></td>
+                                                                                        
+                        }
+                        else
+                        {
+                            <td style="width:60px">@el.ManagerName</td>
+                            <td name="Comments" style="width:100px">@el.Comments</td>
+                        }
+                    </form>
+                </tr>
+            }
+        }
+
+</table>
+
+<br />
+
+<h2>Замер</h2>
+<div style="border:1px solid black; width:initial;text-align:center"><a href="#" onclick="ShowNew('zamer')">новые/все</a>||<a href="#" onclick="HideTable('zamer')">показать/скрыть</a>||<a href="#" onclick="My('@User.Identity.Name','zamer')">мои/все</a></div>
+<br />
+<table style="vertical-align:top;text-align:center" class="tab zamer" border="1">
+    <tr class="title zamer">
+        <td style="width:60px">Имя</td>
+        <td style="width:60px">Телефон</td>
+        <td style="width:100px">Адрес</td>
+        <td style="width:100px">Время</td>
+        <td style="width:60px">Дата</td>
+        <td style="width:60px">Менеджер</td>
+        <td style="width:60px">Статус</td>
+        <td style="width:60px">Коментарий</td>
+    </tr>
+        @foreach (var el in Model)
+        {
+        if(el.Raschet.UserId == -1)
+            {
+                <tr class="Manager_@el.ManagerId zamer @el.Status" style="width:inherit">
+                    <form action="/Manager/Change" method="post">
+                    <td>@el.Zamer.UserName</td>
+                    <td>@el.Zamer.Phone</td>
+                    <td>@el.Zamer.Address</td>
+                    <td>@el.Zamer.Time</td>
+                    <td>@el.Date</td>
+                    <td>@el.ManagerName</td>
+                    @if(el.ManagerId == int.Parse(User.Identity.Name)){
+                    <td><select data-val="true" id="Status" name="Status">
+                                                                                        <option>@Kitchen.Models.Enums.Status(el.Status)</option>
+                                                                                        <option value="1">Новый</option>
+                                                                                        <option value="2">В работе</option>
+                                                                                        <option value="3">Выполнен</option>
+                                                                                        <option value="4">Отменен</option>
+                                                                                        <option value="5">Архив</option>
+                                                                                     </select></td>
+                    <input type="hidden" name="Id" value="@el.Id" />
+                    <input type="hidden" name="ManagerId" value="@el.ManagerId" />
+                    <input type="hidden" name="Table" value="1" />
+                    <td><input type="text" name="Comments" value="@el.Comments" /></td>
+                    <td><button class="submit">изменить</button></td>
+                    }
+                    else if(el.Status == 1)
+                    {
+                        <td><a href="@Url.Action(MVC.Manager.TakeInWork(el.Id,1))">взять</a></td>
+                                                                                        
+                    }
+                    else
+                    {
+                        <td class="Status">@Kitchen.Models.Enums.Status(el.Status)</td>
+                        <td name="Comments">@el.Comments</td>
+                    }
+                    </form>
+                </tr>
+            }
+        }
+
+</table>
+
+
+<script type="text/javascript">
+    function ShowNew(table) {
+        if ($("." + table).is(":hidden")) {
+            $("." + table).siblings().show();
+            $("." + table).show();
+        }
+        else {
+            $("." + table + ".1").siblings().hide();
+            $("." + table + ".1").show();
+        }
+    }
+
+    function HideTable(table) {
+        if ($("." + table + ".tab").is(":hidden")) {
+            $("." + table + ".tab").show();
+        }
+        else {
+            $("." + table + ".tab").hide();
+        }
+    }
+
+    function My(UserId, Table) {
+        if ($('.title.' + Table).is(":hidden")) {
+            $("." + Table).show();
+        }
+        else {
+            $(".Manager_" + UserId + "." + Table).siblings().hide();
+            $(".Manager_" + UserId + "." + Table).show();
+        }
+    }
+
+</script>

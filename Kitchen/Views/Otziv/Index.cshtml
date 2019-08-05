@@ -1,0 +1,68 @@
+﻿@model Kitchen.Models.OtzivList
+
+      <div id="tit_line" style="margin-top:27px;">
+        <h3>Отзывы</h3>
+      </div>
+
+@{decimal pageCount = Math.Ceiling((decimal)Model.countOtziv / (decimal)Model.count);}
+
+       <ul class="otziv_pages">
+            @if(Model.page > 1){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page-1,Model.count))"><</a></li>} 
+			@if(Model.page-3>0){<li><a href="@Url.Action(MVC.Otziv.Index(1,Model.count))">1</a></li>}
+			@if(Model.page > 4){<li><a href="">...</a></li>}
+			@if(Model.page-2>0){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page-2,Model.count))">@(Model.page-2)</a></li>}
+			@if(Model.page-1>0){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page-1,Model.count))">@(Model.page-1)</a></li>}
+            <li><a style="background-color:grey" href="@Url.Action(MVC.Otziv.Index(Model.page,Model.count))">@(Model.page)</a></li>
+			@if(Model.page+1<=pageCount){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page+1,Model.count))">@(Model.page+1)</a></li>}
+            @if(Model.page+2<=pageCount){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page+2,Model.count))">@(Model.page+2)</a></li>}
+            @if(Model.page+3 < pageCount){<li><a href="">...</a></li>}
+            @if(Model.page+3<pageCount ){<li><a href="@Url.Action(MVC.Otziv.Index((int)pageCount,Model.count))">@(pageCount)</a></li>}
+            @if(Model.page < pageCount){<li><a href="@Url.Action(MVC.Otziv.Index(Model.page+1,Model.count))">></a></li>} 
+        </ul>
+      
+        <br />
+        @foreach (var el in Model.otziv)
+        {
+            <text>
+            <div style=" border-bottom:1px solid #e9edf1; padding-bottom:15px;">
+            <div id="otz_blok">
+              <div id="otz_data">@el.Date.ToShortDateString() @el.Date.ToShortTimeString() | <font color="#2b587a"><b>@el.UserName</b></font></div>
+              <div id="otz_text_@el.Id" class="otz_text_">@el.Description</div>
+              @if(Kitchen.Models.db.IsInRole(User.Identity.Name,"admin")){<a onclick='Hide_Show("@el.Id","0")' style="text-decoration-color:red"><br/>Скрыть</a>}</div>
+              <div id="hided_mess_@el.Id" class="hided_mess" style="display:none"><a onclick='Hide_Show("@el.Id","1")' style="text-decoration-color:green"><br/>Восстановить</a></div>
+            </div>
+            </text>
+        }
+        <br/><br/>
+        @if(User!=null && User.Identity.IsAuthenticated)
+        {
+            <text>
+            <div id="otz_data"><font color="#2b587a"><b>@Kitchen.Models.db.GetUserName(int.Parse(User.Identity.Name))</b></font></div><br/>
+            @using (Html.BeginForm("SendOtziv", "Otziv", FormMethod.Post))
+            {
+                <input type="hidden" name="Page" value="@pageCount" />
+            <textarea name="text" style="width:800px; height:100px;"></textarea><button class="blue_btn" type="submit" style="width:120px; margin-top:15px; margin-left:7px;">Отправить</button>
+            }
+            </text>
+        }
+
+
+<script>
+    function Hide_Show(id,val){
+        $.ajax({
+            url: '/Otziv/HideOtziv?Id=' + id + "&val="+ val,
+            success: function (data) {
+                if(val == '0'){
+                    $("#otz_text_"+ id).hide();
+                    $("#hided_mess_" + id).show();
+                }
+                else
+                {
+                    $("#hided_mess_" + id).hide();
+                    $("#otz_text_" + id).show();
+                }
+            }
+        });
+    }
+
+</script>

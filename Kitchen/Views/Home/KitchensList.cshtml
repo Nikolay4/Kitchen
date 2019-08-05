@@ -1,0 +1,8 @@
+﻿
+@model Kitchen.Models.ShowKitchensList
+
+@{
+    ViewBag.Title = Model.brand;
+}
+
+@{ Html.RenderAction("ShowKitchensList", "Home", new { @model = Model }); }

@@ -1,0 +1,41 @@
+﻿
+@model Kitchen.Models.ShowKitchenModel
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+<div id="tit_line" style="margin-top:27px;">
+    <h3>@Model.Name   @Model.Article   @Model.Brand</h3>
+</div>
+@if (User != null && User.Identity.IsAuthenticated && Kitchen.Models.db.IsInRole(User.Identity.Name, "admin") || Kitchen.Models.db.IsInRole(User.Identity.Name, "manager"))
+{
+<div style="text-align:right"><a href="@Url.Action(MVC.Home.Edit(Model.Id))">Редактировать</a></div>
+}
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 20px;">
+    <tr>
+        <td valign="top" width="430">
+            <div>
+                <img class="kuh_big_img" id="bigImg" src="@(Model.Images.Count==0 ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(Model.Images[0]))" /></div>
+            <div id="img_mini">
+                @foreach(var el in Model.Images)
+                {
+                    <a href="#"><img class="kuh_mini_img" src="@(el==null ? "../../Content/nophoto.png" : "data:image/jpg;base64,"+@System.Convert.ToBase64String(el))" onclick="setBigImg(this)"/></a>
+                }
+            </div>
+        </td>
+        <td valign="top">
+            <div id="kuh_discript">
+                <div id="top_decor"></div>
+                <div id="text_big">
+                    @Model.Description
+                </div>
+                <div id="bot_decor"></div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    function setBigImg(el) {
+        $("#bigImg").attr("src", $(el).attr("src"));
+        return false;
+    }
+</script>

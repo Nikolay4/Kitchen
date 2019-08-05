@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Контакты";
+}
+
+    <div id="contact_form">
+      <div id="tit_line">
+        <h1>Контакты</h1>
+      </div>
+      <div style="margin-top:25px; font-family:Verdana, Geneva, sans-serif; font-size:15px; color:#666; line-height:30px;">
+        Телефон: +7 (926) 217-31-19 &nbsp;&nbsp;+7 (499) 755-58-35 <br />
+        Адрес: г. Мытищи, Олимпийский проспект, д, 29, стр.1<br />
+        E-mail: grafkuxnya@mail.ru<br />
+      </div>
+        </div>
+
+<div id="google_map">
+    <div id="map_canvas" style="width:inherit; height:100%;"></div>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Address = new google.maps.LatLng(55.9294781, 37.7506083);
+
+            var myOptions = {
+                zoom: 15,
+                center: Address,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+            //
+
+            var opisanieAddress = '<div style="width:200px; height: 45px">Олимпийский проспект, д.29, стр.1</div>';
+            
+            var infowindowAddress = new google.maps.InfoWindow({
+                content: opisanieAddress
+            });
+
+
+            var markerAddress = new google.maps.Marker({
+                position: Address,
+                map: map,
+                title: 'Магазин'
+            });
+
+            google.maps.event.addListener(markerAddress, 'click', function () {
+                infowindowAddress.open(map, markerAddress);
+            });
+
+            //if (magaz + "" == "") {
+            //    $("#selectorPerv, #selectorCialk").removeClass("active");
+            //    $("#selectorPerv").addClass("active");
+            //}
+            //else {
+            //    $("#selectorPerv, #selectorCialk").removeClass("active");
+            //    $("#selectorCialk").addClass("active");
+            //}
+        });
+    </script>

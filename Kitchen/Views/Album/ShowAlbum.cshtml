@@ -1,0 +1,25 @@
+﻿@model Kitchen.Models.AlbumsModel
+
+@if (User != null && User.Identity.IsAuthenticated   && (Kitchen.Models.db.IsInRole(User.Identity.Name,"admin")))
+    {
+    <a href="@Url.Action(MVC.Album.AddPhoto(Model.AlbumId))">Добавить фотографии</a><br/><br/>
+
+    <a href="@Url.Action(MVC.Album.AddAlbum(Model.Alias))">Редактировать альбом</a><br/><br/>
+}
+
+      <div id="tit_line" style="margin-top:27px;">
+        <h3>@Model.Name</h3>
+      </div>
+@{
+    int number = 0;
+}
+@if(Model.PreviewPhotos!=null && Model.PreviewPhotos.Count>0)
+{
+    foreach (var el in Model.PreviewPhotos)
+    {
+        number += 1;
+        <text>
+        <a href="@Url.Action(MVC.Album.Photo(el.PhotoId,Model.PreviewPhotos.Count,number))"><img class="galer2" src="@("data:image/jpg;base64,"+System.Convert.ToBase64String(el.Photo))" /></a>
+        </text>
+    }
+}

@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+
+    <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <link href="~/Content/css/style.css" type="text/css" rel="stylesheet" />
+
+    <title>Графские кухни</title>
+    @RenderSection("Scripts", required: false)
+</head>
+<body>
+    <div id="wrapper">
+        <div id="login_link">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <text>
+                    Добро пожаловать,@Kitchen.Models.db.GetUserName(int.Parse(User.Identity.Name)) !! &nbsp;&nbsp; [ @Html.ActionLink("Выход", "LogOff", "Account") ]  &nbsp;&nbsp;
+                    @if (Kitchen.Models.db.IsInRole(User.Identity.Name, "admin") || Kitchen.Models.db.IsInRole(User.Identity.Name, "manager"))
+                    {
+                        <text>
+                            <a href="@Url.Action(MVC.Manager.GetList())"> [@Kitchen.Models.db.GetZakazCount(1, 1) Новых замеров  @Kitchen.Models.db.GetZakazCount(2, 1) Новых расчетов] &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            <a href="@Url.Action(MVC.Home.Edit())">[Добавить Кухню]</a>
+                            <a href="@Url.Action(MVC.News.Edit())">[Добавить Новость]</a>
+                        </text>
+                    }
+                </text>
+            }
+            else
+            {
+                <text>
+                    <a href="@Url.Action(MVC.Account.Register())" class="k_login">Регистрация</a> &nbsp;|&nbsp; <a href="@Url.Action(MVC.Account.Login())" class="k_login">Авторизация</a>
+                </text>
+            }
+        </div>
+        <div id="k_head">
+            <div id="k_nagr">
+                <div id="krug_1"></div>
+                <div id="krug_2"></div>
+                <div id="krug_3"></div>
+            </div>
+            <div id="k_logo">
+                <a href="@Url.Action(MVC.Home.Index())">
+                    <img class="logo_img" src="../../Content/images/logo.jpg" width="250" height="92" title="На главную" />
+                </a>
+            </div>
+            <div id="k_tel">
+                +7 (499) 755-58-35<br>
+                +7 (926) 217-31-19 &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        <div>
+            <table style="width:100%; margin-bottom:3px">
+                <tr>
+                    <td style="text-align:left">
+                        <h5>@Html.MvcSiteMap().SiteMapPath()
+                        @*@Html.MvcSiteMap().Menu(false, true, true)
+                        <p>Start of Breadcrumbs:</p>*@</h5>
+                    </td>
+                    <td style="text-align: right;">
+                        <h5>г. Мытищи, Олимпийский проспект, д, 29, стр.1 ТЦ Формат, цокольный этаж, салон "ГРАФСКАЯ КУХНЯ" &nbsp;&nbsp;&nbsp;&nbsp;</h5>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="k_menu">
+            <ul class="menu">
+                <li id="fr_calc"><a href="@Url.Action(MVC.Raschet.Index())" class="k_calc">On-line расчет</a></li>
+                <li><a href="@Url.Action(MVC.Home.ForDesigners())">Для дизайнеров</a></li>
+                <li><a href="@Url.Action(MVC.Recipe.RecipeBook())">Книга рецептов</a></li>
+                <li><a href="@Url.Action(MVC.Album.Index())">Фотогалерея</a></li>
+                <li><a href="@Url.Action(MVC.Home.About())">О нас</a></li>
+                <li><a href="@Url.Action(MVC.News.ListNews())">Акции</a></li>
+                <li><a href="@Url.Action(MVC.Otziv.Index(1,10))">Отзывы</a></li>
+                <li id="k_cont"><a href="@Url.Action(MVC.Home.Contact())">Контакты</a></li>
+            </ul>
+        </div>
+
+        <div id="k_content">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td id="left_cont" style="vertical-align: top">
+                        <div id="zamer">
+                            <a href="@Url.Action(MVC.Zamer.Index())">
+                                <img src="../../Content/images/zamer.jpg" width="250" height="150" title="Вызов замерщика" />
+                            </a>
+                        </div>
+                        <!--Блок кухни-->
+                        <div id="kuh_png"></div>
+                        <div id="kuhni">
+                            <div id="tit_kuh">Кухни</div>
+                            <ul id="my_menu">
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(1, null, null, null, ""))"><span>Умные кухни</span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(2, null, null, null, ""))"><span>Кухни модерн</span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(3, null, null, null, ""))"><span>Кухни Hi-Tech</span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(4, null, null, null, ""))"><span>Кухни Массив</span></a></li>
+                            </ul>
+                        </div>
+
+
+                        <!--Конец блока кухни-->
+                        <!--Блок столешницы-->
+
+                        <div id="kuh_png_stol"></div>
+                        <div id="kuhni">
+                            <div id="tit_kuh2">Столешницы</div>
+                            <ul id="accordion">
+                                <li>Акриловый камень</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 1, null, null, ""))">» Samsung</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 2, null, null, ""))">» LG Hi-Maks</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 3, null, null, ""))">» CORIAN</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 4, null, null, ""))">» HANEX</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 5, null, null, ""))">» TriStone</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 6, null, null, ""))">» MONTELLI</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 7, null, null, ""))">» Bien Stone</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 8, null, null, ""))">» NEOMARM</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(5, 9, null, null, ""))">» Kerrock</a></li>
+                                </ul>
+                                <li>Кварц</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(6, 1, null, null, ""))">» Samsung</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(6, 10, null, null, ""))">» Plaza Stone</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(6, 11, null, null, ""))">» HanStone</a></li>
+                                </ul>
+                                <li>Пластик</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(7, 12, null, null, ""))">» Arpa</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(7, 13, null, null, ""))">» Resopal</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(7, 14, null, null, ""))">» Formica</a></li>
+                                </ul>
+                        </div>
+
+                        <!--Конец блока столешницы-->
+                        <!--Блок Бытовая Техника-->
+
+                        <div id="kuh_png_bteh"></div>
+                        <div id="kuhni">
+                            <div id="tit_kuh2">Бытовая техника</div>
+                            <ul id="accordion">
+                                <li>Вытяжки</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 15, null, null, ""))">» Faber</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 16, null, null, ""))">» Kuppersberg</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 17, null, null, ""))">» Krona</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 18, null, null, ""))">» Shindo</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 19, null, null, ""))">» AEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 20, null, null, ""))">» Elicor</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 21, null, null, ""))">» Electrolux</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 22, null, null, ""))">» Airforce</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 23, null, null, ""))">» Cyclone</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 24, null, null, ""))">» Teka</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 25, null, null, ""))">» Vialona</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 26, null, null, ""))">» Forest</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(8, 27, null, null, ""))">» SMEG</a></li>
+                                </ul>
+                                <li>Духовые шкафы</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 16, null, null, ""))">» Kuppersberg</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 28, null, null, ""))">» NEFF</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 29, null, null, ""))">» NEFF+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 27, null, null, ""))">» SMEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 19, null, null, ""))">» AEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 30, null, null, ""))">» Zanussi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 31, null, null, ""))">» Nardi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 32, null, null, ""))">» Fornelli</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 24, null, null, ""))">» Teka</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 33, null, null, ""))">» Gorenje</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 34, null, null, ""))">» Gorenje+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 35, null, null, ""))">» Miele</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 36, null, null, ""))">» Kuppersbusch</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 37, null, null, ""))">» Kaiser</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 38, null, null, ""))">» Zigmund Shtain</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(9, 39, null, null, ""))">» ASKO</a></li>
+                                </ul>
+                                <li>Варочные поверхности</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 16, null, null, ""))">» Kuppersberg</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 28, null, null, ""))">» NEFF</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 29, null, null, ""))">» NEFF+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 27, null, null, ""))">» SMEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 19, null, null, ""))">» AEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 30, null, null, ""))">» Zanussi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 31, null, null, ""))">» Nardi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 32, null, null, ""))">» Fornelli</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 24, null, null, ""))">» Teka</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 33, null, null, ""))">» Gorenje</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 34, null, null, ""))">» Gorenje+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 35, null, null, ""))">» Miele</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 36, null, null, ""))">» Kuppersbusch</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 37, null, null, ""))">» Kaiser</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 38, null, null, ""))">» Zigmund Shtain</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(10, 39, null, null, ""))">» ASKO</a></li>
+                                </ul>
+                                <li>Встроенные холодильники</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 16, null, null, ""))">» Kuppersberg</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 28, null, null, ""))">» NEFF</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 29, null, null, ""))">» NEFF+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 27, null, null, ""))">» SMEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 19, null, null, ""))">» AEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 30, null, null, ""))">» Zanussi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 31, null, null, ""))">» Nardi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 32, null, null, ""))">» Fornelli</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 24, null, null, ""))">» Teka</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 33, null, null, ""))">» Gorenje</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 34, null, null, ""))">» Gorenje+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 35, null, null, ""))">» Miele</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 36, null, null, ""))">» Kuppersbusch</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 37, null, null, ""))">» Kaiser</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 38, null, null, ""))">» Zigmund Shtain</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 39, null, null, ""))">» ASKO</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(11, 40, null, null, ""))">» Liebherr</a></li>
+                                </ul>
+                                <li>Посудомоечные машины</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 16, null, null, ""))">» Kuppersberg</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 28, null, null, ""))">» NEFF</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 29, null, null, ""))">» NEFF+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 27, null, null, ""))">» SMEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 19, null, null, ""))">» AEG</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 30, null, null, ""))">» Zanussi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 31, null, null, ""))">» Nardi</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 32, null, null, ""))">» Fornelli</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 24, null, null, ""))">» Teka</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 33, null, null, ""))">» Gorenje</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 34, null, null, ""))">» Gorenje+</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 35, null, null, ""))">» Miele</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 36, null, null, ""))">» Kuppersbusch</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 37, null, null, ""))">» Kaiser</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 38, null, null, ""))">» Zigmund Shtain</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 39, null, null, ""))">» ASKO</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(12, 41, null, null, ""))">» Flavia</a></li>
+                                </ul>
+                                <li>Измельчители</li>
+                                <ul>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(13, 42, null, null, ""))">» Bone Crusher</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(13, 43, null, null, ""))">» IN-SINK</a></li>
+                                    <li><a href="@Url.Action(MVC.Home.KitchensList(13, 44, null, null, ""))">» Erator</a></li>
+                                </ul>
+                            </ul>
+                        </div>
+
+                        <!--Конец Бытовая техника-->
+                        <!--Блок Мойки-->
+
+                        <div id="kuh_png_moyki"></div>
+                        <div id="kuhni">
+                            <div id="tit_kuh2">Мойки и смесители</div>
+                            <ul id="my_menu">
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(14, 45, null, null, ""))"><span>Blanco  </span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(14, 46, null, null, ""))"><span>Franke  </span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(14, 47, null, null, ""))"><span>Polygran</span></a></li>
+                                <li><a href="@Url.Action(MVC.Home.KitchensList(14, 48, null, null, ""))"><span>Schock  </span></a></li>
+                            </ul>
+                        </div>
+
+                        <!--Конец мойки-->
+                        <!--Блок Обеденный группы-->
+                        @*<div id="kuh_png_obed"></div>
+                            <div id="kuhni">
+                                <div id="tit_kuh2">Обеденные группы</div>
+
+                            </div>*@
+
+                        <!--Конец Обеденные группы -->
+
+                    </td>
+                    <td id="right_cont" style="vertical-align:top; padding-top: 32px">
+
+                        @RenderBody()
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="k_foot">
+        <div id="foot_cont">
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+    <script>
+        $("#accordion > li").click(function () {
+
+            if (false == $(this).next().is(':visible')) {
+                $('#accordion > ul').slideUp(300);
+            }
+            $(this).next().slideToggle(300);
+        });
+
+        $('#accordion > ul:eq(0)').show();
+
+    </script>
+    <script>
+        var h_hght = 40; // высота шапки
+        var h_mrg = 0;    // отступ когда шапка уже не видна
+        $(function () {
+            $(window).scroll(function () {
+                var top = $(this).scrollTop();
+                var elem = $('#k_menu');
+                if (top + h_mrg < h_hght) {
+                    elem.css('top', (194));
+                } else {
+                    elem.css('top', h_mrg);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

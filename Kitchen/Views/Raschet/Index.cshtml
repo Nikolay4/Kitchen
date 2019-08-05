@@ -1,0 +1,53 @@
+﻿
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<link href="~/Content/css/style.css" rel="stylesheet" />
+
+
+@model Kitchen.Models.RaschetModels
+     <div id="tit_line" style="margin-top:27px;">
+        <h3>On-line расчет</h3>
+      </div>
+<form action="/Raschet/SendZakaz" method="post" novalidate="novalidate">
+  @*  <input type="hidden" name="UserId" value="@Int16.Parse(User.Identity.Name)"/>*@
+    <div id="kuh_select">
+        <select data-val="true" data-val-required="Требуется поле Type." id="Type" name="Type"><option>Умные_кухни</option>
+        <option>Кухни_Модерн</option>
+        <option>Кухни_Hi_Tech</option>
+        <option>Кухни_Массив</option>
+        </select>
+    </div>
+    
+    <br /><br /><center>Выберите форму кухни:</center>
+    <div id="Form">
+        <input type="hidden" name="Form" value="">
+    </div>
+
+    <div id="1" class="kuh_form" ><img src="../../Content/images/form1.png" border="0" /></div>
+    <div id="2" class="kuh_form" ><img src="../../Content/images/form2.png" border="0" /></div>
+    <div id="3" class="kuh_form" ><img src="../../Content/images/form3.png" border="0" /></div>
+    <div id="4" class="kuh_form" ><img src="../../Content/images/form4.png" border="0" /></div>
+    
+    &nbsp;&nbsp;
+    <br /><br />
+    <div id="wishes">
+      Пожелания:<br /><br />
+      <textarea style="width:793px; height:100px;" name="Text"></textarea>
+    </div>
+    
+    <div id="text_otpr"><button type="submit" class="blue_btn" style="margin-left:700px; width:100px;">Отправить</button></div>
+</form> 
+
+<script>
+    $(".kuh_form").bind("click", function () {
+        var value = this.id;
+        //console.log("value = ",value);
+        //$(".kuh_form").siblings().attr({ background: "#bbbbbb" }, 0);
+        //$(".kuh_form").attr({ background: "#ef8282" }, 0);
+        $(".kuh_form").removeClass("active");
+        $("#"+value).addClass("active")
+        $('#Form input').val(value);
+    });
+</script>
+
+            

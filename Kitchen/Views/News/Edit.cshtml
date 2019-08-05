@@ -1,0 +1,123 @@
+﻿
+@model Kitchen.Models.ContentModel
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        theme: "modern",
+        width: 800,
+        height: 300,
+        plugins: [
+             "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+             "save table contextmenu directionality emoticons template paste textcolor"
+        ],
+        content_css: "",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons | spoiler",
+        setup: function(editor) {
+            editor.addButton('spoiler', {
+                text: 'spoiler',
+                icon: false,
+                onclick: function() {
+                    editor.insertContent('<div class="myspoiler"><a href="#" onclick="return false;">Cпойлер [показать/скрыть]</a></div><div class="myspoiler-text">Текст, размещенный внутри спойлера.</div>');
+                }
+            });
+        },
+        style_formats: [
+             { title: 'Bold text', inline: 'b' },
+             { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+             { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+             { title: 'Example 1', inline: 'span', classes: 'example1' },
+             { title: 'Example 2', inline: 'span', classes: 'example2' },
+             { title: 'Table styles' },
+             { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+        ]
+    });
+</script>
+    @if (Model == null)
+    {
+        <h2>Добавить новый контент.</h2>
+    }
+    else
+    {
+        <h2>Редактировать контент.</h2>
+    }
+
+    @using (Html.BeginForm("Edit", "News", FormMethod.Post, new { onsubmit = "mySubmit();" }))
+    {
+        
+        @Html.HiddenFor(m => m.id, new { @Value = Model == null ? 0 : Model.id })
+
+        <text>Alias:</text> @Html.EditorFor(m => m.Alias) @Html.ValidationMessageFor(m => m.Alias) <text> - английские без пробелов</text><br /><br />
+        <text>Заголовок:</text> @Html.EditorFor(m => m.Title) @Html.ValidationMessageFor(m => m.Title)<br /><br />
+        <text>Дата публикации:</text> @Html.EditorFor(m => m.Date) @Html.ValidationMessageFor(m => m.Date)<br /><br />
+
+        //  if (User != null && User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("news")))
+        {
+            <text>Опубликовано:</text> @Html.CheckBoxFor(m => m.IsPublished)<br /><br />
+        }
+
+
+        <br/>
+        Html.ValidationSummary(true);
+        <div id="imgString"></div>
+
+        <text>Краткое описание:</text> @Html.ValidationMessageFor(m => m.Brief)<br />
+
+        @Html.TextAreaFor(m => m.Brief, 5, 1, new { @style = "width:97%;" })
+
+        <br /><br /><br />
+        <text>Описание:</text> <br /> @Html.ValidationMessageFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, 5, 1, new { @style = "width:97%;" })
+        <br /><br /><br />
+
+        <br />
+        <br />
+        <input type="submit" value="Сохранить" />
+        <br />
+    }
+<br /><br />Загрузить фoтографию<br />
+@*
+    <form id="fileUpload" action="@Url.Action("AddImage","News")" method="POST" enctype="multipart/form-data">*@
+    <input id="fileInput" name="fileInput" multiple="multiple" type="file" />
+    <input type="submit" value="Загрузить" id="btnFileUpload" />
+@*</form>*@
+<div id="image"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#btnFileUpload').click(function () {
+            var formData = new FormData();
+            var file = document.getElementById("fileInput").files[0];
+            formData.append("image", file);
+            if (file != undefined) {
+                $.ajax({
+                    url: '/News/AddImage',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $("#image").html($("#image").html() + "/Image/ImagesForNews/" + data + "<br/>")
+                    },
+                });
+            }
+        });
+    });
+</script>
+@*@using (Ajax.BeginForm("AddImage", "News", new { enctype = "multipart/form-data" }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "target" }))
+{
+    <input id="fileinput" name="fileInput" type="file" />
+    <input type="submit" value="Загрузить" id="btnFileUpload" />
+}*@
+
+
+    <script type="text/javascript">
+    //bkLib.onDomLoaded(function () { nicEditors.allTextAreas() });
+
+    function mySubmit() {
+        $("#Brief").html($("#Brief").prev().children().html());
+        $("#Description").html($("#Description").prev().children().html());
+    }
+    </script>

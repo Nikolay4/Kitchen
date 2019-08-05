@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Главная" controller="Home" action="Index" key="Home">
+    <mvcSiteMapNode title="About" controller="Home" action="Edit" />
+    <mvcSiteMapNode title="Кухни" controller="Home" action="KithensList" />
+    <mvcSiteMapNode title="Альбом" controller="Home" action="ShowKithensList" />
+    <mvcSiteMapNode title="Контакты" controller="Home" action="Contact" />
+    
+    <mvcSiteMapNode title="Фотогалерея" controller="Album" action="Index" key="Album" >
+      <mvcSiteMapNode title="Добавить Альбом" controller="Album" action="AddAlbum" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Отзывы" controller="Otziv" action="Index" key="Otziv" />
+    <mvcSiteMapNode title="On-line Расчет" controller="Raschet" action="Index" key="Raschet" />
+    <mvcSiteMapNode title="Вызов замерщика" controller="Zamer" action="Index" key="Zamer" />
+  </mvcSiteMapNode>
+ 
+
+
+</mvcSiteMap>

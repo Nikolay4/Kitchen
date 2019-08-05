@@ -1,0 +1,10 @@
+﻿@model Kitchen.Models.ContentModel
+@if(User != null && User.Identity.IsAuthenticated && Kitchen.Models.db.IsInRole(User.Identity.Name, "admin") || Kitchen.Models.db.IsInRole(User.Identity.Name, "manager"))
+{
+    <div style="text-align:right"><a href="@Url.Action(MVC.Home.EditPage("About"))">Редактировать</a></div>
+}
+<table style="width:100%">
+    <tr>
+        <td>@Html.Raw(Model.Description)</td>
+    </tr>
+</table>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Добавить кухню";
+}
+@model Kitchen.Models.addKitchenModels
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+
+@if (Model == null)
+{
+    <h2>Добавить новую кухню.</h2>
+}
+else
+{
+    <h2>Редактировать кухню.</h2>
+}
+@using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id, new { @Value = Model == null ? 0 : Model.Id })
+    
+    <text>Категория: </text>@Html.DropDownListFor(model => model.Category, new SelectList(Enum.GetValues(typeof(Kitchen.Models.Enums.category)))) <text>&nbsp;&nbsp;&nbsp;</text>
+    <text>Бренд: </text>@Html.DropDownListFor(model => model.Brand, new SelectList(Enum.GetValues(typeof(Kitchen.Models.Enums.brand)))) 
+        <br />
+    <br />
+    
+    Html.ValidationSummary(true);
+    <text>Артикул:</text> @Html.EditorFor(m => m.Article) @Html.ValidationMessageFor(m => m.Article)<br /><br />
+    <text>Наименование:</text> @Html.EditorFor(m => m.Name) <br /><br />
+    <text>Описание:</text> <br /> @Html.TextAreaFor(m => m.Description, 5, 1, new { @style = "width:97%;" }) <br /><br />
+    <br />
+    <input type="submit" value="Сохранить" />
+    <br />
+}
+
+
+    <br />
+    <br />
+@{ Html.RenderAction("EditImagesFromThing", "Image", new { @id = Model == null ? 0 : Model.Id }); }
+    <br />
+    <br />
+
+<h2>Прикрепить фотографии.</h2>
+@using (Html.BeginForm("AddImg", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @*Html.TextBoxFor(m => m.AddImage, new { type = "file" })*@
+    @Html.HiddenFor(m => m.Id, new { @Value = Model == null ? 0 : Model.Id })
+    if (Model == null || Model.Id == 0)
+    {
+        <text>Для добавления изображений сохраните описание товара.</text>
+    }
+    else
+    {
+        <input type="file" name="AddImage" id="AddImage" accept="image/*" />
+        <br />
+        <input type="submit" value="Добавить фотографию" />
+    }
+}
